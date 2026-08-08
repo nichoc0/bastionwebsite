@@ -3,6 +3,10 @@
 // a full-bleed environment you are standing inside, one claim, one action,
 // and the product bleeding up into the scene and cut off by the fold, so the
 // only way to finish the picture is to scroll.
+import { corpus } from '../data/dataset'
+
+const items = corpus.items.toLocaleString('en-US')
+const links = corpus.links.toLocaleString('en-US')
 ---
 
 <section class="hero">
@@ -70,10 +74,16 @@
         src="/assets/shot-cortex.webp"
         width="1800"
         height="1125"
-        alt="The Bastion corpus: 18,158 items and 18,531 links."
+        alt={`The Bastion corpus: ${items} items and ${links} links.`}
         decoding="async"
       />
     </div>
+    <p class="corpus-line">
+      <a href="/corpus"
+        ><span class="tnum">{items}</span> items · <span class="tnum">{links}</span> links ·
+        compounds every run</a
+      >
+    </p>
   </div>
 </section>
 
@@ -410,6 +420,25 @@
       radial-gradient(52% 100% at 74% 108%, rgba(16, 15, 13, 0.9) 0%, rgba(16, 15, 13, 0) 74%),
       linear-gradient(to top, rgba(16, 15, 13, 0.92) 0%, rgba(16, 15, 13, 0) 86%);
     filter: blur(5px);
+  }
+
+  /* sits over the cloud that crosses the base of the stage, so it needs
+     its own stacking context to stay legible */
+  .corpus-line {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.15rem;
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    color: rgba(246, 240, 226, 0.62);
+  }
+
+  .corpus-line a {
+    text-decoration: none;
+  }
+
+  .corpus-line a:hover {
+    color: #f4d79a;
   }
 
   .frame .still {
