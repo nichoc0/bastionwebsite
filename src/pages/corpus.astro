@@ -1,0 +1,395 @@
+---
+import Base from '../layouts/Base.astro'
+import { dataset, corpus } from '../data/dataset'
+import { families, familyMax } from '../data/taxonomy'
+
+const items = corpus.items.toLocaleString('en-US')
+const links = corpus.links.toLocaleString('en-US')
+
+// All figures on this page come from data/dataset.ts and data/taxonomy.ts.
+// Do not type a number into this file directly.
+const stats = [
+  { value: items, label: 'items' },
+  { value: links, label: 'links between them' },
+  { value: String(dataset.engagements), label: 'engagements' },
+  { value: String(dataset.findings), label: 'findings' },
+]
+
+const pillars = [
+  {
+    term: 'Independent',
+    body: 'We run the attacks ourselves and hold the record ourselves. We are not the vendor that built the model, and not the team that shipped the agent. Nothing in the corpus depends on either one grading its own work.',
+  },
+  {
+    term: 'Compounding',
+    body: 'Every engagement writes back. Findings, techniques, and dead ends all land in the same record, so the next run opens with everything the last one learned instead of a guess.',
+  },
+  {
+    term: 'Field-wide',
+    body: 'You have only ever seen your own agents break. The corpus holds the failures of every agent we have attacked, and the pattern found in one deployment becomes a probe against the next. Your data stays yours.',
+  },
+]
+
+const sources = [
+  {
+    n: '01',
+    t: 'Our own engagements',
+    d: `Attacks we ran ourselves, under authorization, against live agents. ${dataset.engagements} engagements, ${dataset.findings} findings, ${dataset.lessons} lessons, and every finding carries the transcript that produced it.`,
+  },
+  {
+    n: '02',
+    t: 'Our own research',
+    d: "Standing benchmark and leaderboard work: #5 of 10,000+ on Lakera's Agent Breaker, 94% attack success rate on AgentHarm's official test split.",
+  },
+  {
+    n: '03',
+    t: 'The public record',
+    d: 'Disclosed vulnerabilities, published jailbreaks, and bug-bounty scope data, ingested as a baseline so a run never spends time rediscovering what is already public.',
+  },
+]
+---
+
+<Base
+  title="The corpus · Bastion"
+  description="What the corpus is, where every item comes from, and what stays with the client. 18,158 items, 18,531 links, compounding every run."
+>
+  <section class="top">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="page">
+      <p class="label">The corpus</p>
+      <h1>
+        <span class="tnum">{items}</span> items. <span class="tnum">{links}</span> links.
+        Growing every run.
+      </h1>
+      <p class="lede">
+        The corpus is the record every run reads from before it moves and
+        writes back to when it is done. It holds techniques, attack mechanisms,
+        jailbreak prompts, engagement records and recon.
+      </p>
+
+      <dl class="stats">
+        {
+          stats.map((s) => (
+            <div>
+              <dt class="tnum">{s.value}</dt>
+              <dd>{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="asof">Counts verified {dataset.verified}.</p>
+    </div>
+  </section>
+
+  <section class="section pillars-band">
+    <div class="page">
+      <p class="label">What it is</p>
+      <dl class="pillars">
+        {
+          pillars.map((p) => (
+            <div>
+              <dt>{p.term}</dt>
+              <dd>{p.body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class="independent">
+        The incumbents are buying, not building. The labs cannot sit neutral,
+        and enterprises will not hand vulnerability data to their model vendor.
+        That is why the record is us.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      <p class="label">Where it comes from</p>
+      <h2>Three sources, stated</h2>
+
+      <ol class="sources">
+        {
+          sources.map((s) => (
+            <li>
+              <span class="n tnum">{s.n}</span>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section separation">
+    <div class="page">
+      <p class="label">Data separation</p>
+      <h2>What stays yours, what compounds</h2>
+
+      <div class="twocol">
+        <p>
+          Everything that identifies you stays in your engagement record. The
+          findings, the transcripts, the endpoints they touched, and anything
+          naming your systems or your customers goes to you and nowhere else.
+        </p>
+        <p>
+          What compounds is the technique layer: the de-identified shape of
+          each failure, the class of defense it beat, and what finally stopped
+          it. That layer carries no client identifiers. It is the part every
+          future run starts from.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      <p class="label">Where the depth sits</p>
+      <h2>Technique families by depth</h2>
+
+      <ol class="families">
+        {
+          families.map((f) => (
+            <li>
+              <span class="f-label">{f.label}</span>
+              <span class="bar" aria-hidden="true">
+                <span class="fill" style={`width:${(f.count / familyMax) * 100}%`} />
+              </span>
+              <span class="f-count tnum">{f.count}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="asof">Snapshot {corpus.snapshot}. Generic failure classes only.</p>
+    </div>
+  </section>
+
+  <section class="section close-band">
+    <div class="page close">
+      <p class="lede">Every engagement leaves it bigger. Yours would too.</p>
+      <a class="btn btn-primary" href="/contact">See how it fails</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .glow {
+    position: absolute;
+    inset: -40% -20% auto -20%;
+    height: 190%;
+    z-index: -1;
+    background:
+      radial-gradient(42% 44% at 74% 0%, rgba(255, 240, 206, 0.32) 0%, rgba(16, 15, 13, 0) 68%),
+      radial-gradient(60% 50% at 84% 6%, rgba(214, 150, 66, 0.18) 0%, rgba(16, 15, 13, 0) 64%);
+    filter: blur(24px);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.25rem + 3vw, 3.5rem);
+    margin-block: 1.1rem 1.35rem;
+    max-width: 22ch;
+  }
+
+  .stats {
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: start;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  .stats dt {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .stats dd {
+    margin: 0.45rem 0 0;
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  .asof {
+    margin-top: 1.4rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .pillars-band {
+    background: var(--panel);
+    border-block: 1px solid var(--stone-line);
+  }
+
+  .pillars {
+    margin: 1.75rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--stone-line);
+  }
+
+  .pillars dt {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin-bottom: 0.6rem;
+  }
+
+  .pillars dd {
+    margin: 0;
+    font-size: 0.985rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .independent {
+    margin-top: clamp(2.25rem, 4.5vw, 3.25rem);
+    padding-left: 1.3rem;
+    border-left: 2px solid var(--gold);
+    font-family: var(--display);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.7rem);
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 38ch;
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 1.15rem + 1.9vw, 2.5rem);
+    max-width: 26ch;
+    margin-block: 1.1rem clamp(2.25rem, 4vw, 3.25rem);
+  }
+
+  .sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .sources li {
+    border-top: 1px solid var(--stone-line);
+    padding-top: 1.15rem;
+  }
+
+  .n {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--gold-text);
+    letter-spacing: 0.1em;
+  }
+
+  .sources h3 {
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+    margin-block: 0.45rem 0.6rem;
+  }
+
+  .sources p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .separation {
+    background: var(--panel);
+    border-block: 1px solid var(--stone-line);
+  }
+
+  .twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .twocol p {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--ink-2);
+    border-top: 1px solid var(--stone-line);
+    padding-top: 1.15rem;
+  }
+
+  .families {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+    max-width: 46rem;
+  }
+
+  .families li {
+    display: grid;
+    grid-template-columns: minmax(11rem, 16rem) 1fr auto;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .f-label {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+
+  .bar {
+    display: block;
+    height: 8px;
+    background: var(--bone-lift);
+    border: 1px solid var(--stone-line);
+  }
+
+  .fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(to right, var(--gold), var(--gold-lift));
+  }
+
+  .f-count {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .close-band {
+    border-top: 1px solid var(--stone-line);
+  }
+
+  .close {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.75rem 2.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .stats {
+      grid-template-columns: repeat(2, auto);
+    }
+    .pillars,
+    .sources,
+    .twocol,
+    .close {
+      grid-template-columns: 1fr;
+    }
+    .families li {
+      grid-template-columns: minmax(9rem, 1fr) 1fr auto;
+    }
+  }
+</style>
