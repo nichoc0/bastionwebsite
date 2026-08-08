@@ -1,10 +1,11 @@
 ---
-// Only pages that exist. /insurance and /articles join the nav when they ship
-// (build sequence steps 2 and 3). No links to empty pages.
+// Only pages that exist. No links to empty pages.
+// /insurance is deliberately not here. It lives in the footer and gets sent
+// as a direct link to carriers, so security buyers never wonder what we sell.
 const links = [
   { href: '/platform', label: 'Platform' },
   { href: '/articles', label: 'Research' },
-  { href: '/insurance', label: 'Insurance' },
+  { href: '/corpus', label: 'Corpus' },
 ]
 ---
 
