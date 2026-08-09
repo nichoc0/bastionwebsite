@@ -5,4 +5,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   build: { inlineStylesheets: 'always' },
   compressHTML: true,
+  // /articles shipped first and may be linked externally. Vercel serves the
+  // real 301 (vercel.json); this covers local preview and other hosts.
+  redirects: { '/articles': '/research' },
 })

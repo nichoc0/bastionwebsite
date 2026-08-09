@@ -1,0 +1,224 @@
+---
+import Base from '../layouts/Base.astro'
+
+// Failure patterns only. No live exploits, no CVEs, no payloads, no targets.
+// Each one is written from the builder's side: here is the shape of the hole,
+// and here is why the defense you already bought does not see it.
+//
+// `published` is the date the piece went up on this site (git history).
+// `found` ties the pattern to a published engagement case and must reuse the
+// wording already shipped in data/engagements.ts. Piece 03 has no published
+// engagement behind it yet, so it carries no line. Do not write one for it
+// until there is a case on the record.
+// TODO(Nick): byline pending. Suggestion on the table is Bao (adversarial
+// research). Not shipped until confirmed.
+const pieces = [
+  {
+    code: 'API1',
+    klass: 'authorization',
+    published: '2026-07-30',
+    title: 'The agent checked who you are, then never checked what you asked for',
+    hook: 'Your session auth is probably fine. The object your agent fetched on your behalf is the part nobody guarded.',
+    found:
+      "We found this shape in a Fortune 500 customer-experience platform. A canary account owning no data listed more than two thousand other tenants' live support conversations.",
+    body: [
+      'Almost every agent gets built with the session boundary correct. You log in, the request carries your identity, and the framework enforces it. Then the agent is given a tool that takes an identifier, a conversation, a ticket, an order, a record, and the tool goes and gets it.',
+      'The identifier is where it fails. The tool trusts that whatever the model passed it was something the caller was entitled to, because the caller was authenticated. Authenticated and authorized get collapsed into one check, and the second one quietly never happens.',
+      'What makes it hard to see in review is that the model is doing exactly what it was asked. There is no injection, no jailbreak, no clever prompt. A user asks about their order, the agent asks about a different order, and the backend answers because the session was valid.',
+      'Standard defenses miss it because they are watching the language. A guardrail scoring the prompt for hostility sees a polite customer question. A WAF sees an authenticated API call in the normal shape. The failure is one layer under the thing being monitored.',
+      'The check to run: for every tool your agent can call, ask whether the ownership of the argument is verified at the point the data is read, not at the point the user logged in. If the answer involves the word "should", it is not verified.',
+    ],
+  },
+  {
+    code: 'LLM08',
+    klass: 'tool layer',
+    published: '2026-07-30',
+    title: 'The allowlist was trusted. The ground it ran on was not',
+    hook: 'You constrained which commands the agent may run. You did not constrain the environment those commands resolve in.',
+    found:
+      "We found this shape in a coding agent's tool connector. Its author-trust filter shipped off by default, so text from a stranger's pull request reached the agent as trusted instructions.",
+    body: [
+      'The standard containment for a tool-using agent is an allowlist. These commands are safe, everything else is refused. It is a reasonable model and it holds right up until the thing being allowlisted is a name rather than a behaviour.',
+      'A command name resolves through an environment. Configuration files, path lookup, aliases, project-local settings, plugin manifests, hook definitions. If any of that is writable by content the agent ingests, then an allowlisted name can be pointed at something else entirely, and the allowlist still passes because the name did not change.',
+      'This is the shape behind a whole family of recent agent escapes, and it generalises well past coding tools. Anywhere an agent reads a workspace it did not author, the workspace gets a vote on what the agent\'s own commands mean.',
+      'The reason it survives review is that the allowlist looks like the control. It is auditable, it is short, and reading it gives real comfort. The mutable part is the environment, which is rarely in the same document.',
+      'The check to run: take your allowlist, and for each entry ask what would have to be true for that name to resolve to different behaviour. Then ask whether any content the agent reads can make that true.',
+    ],
+  },
+  {
+    code: 'ASI04',
+    klass: 'identity',
+    published: '2026-07-30',
+    title: 'Identified is not verified, and voice agents keep confusing the two',
+    hook: 'The caller told your agent who they were. Your agent believed them, and then acted on it.',
+    body: [
+      'A voice or chat agent handling accounts has to establish who it is talking to. Almost all of them do the first half well: they collect a name, an account reference, a date of birth, and they route on it. Very few do the second half, which is proving that the person supplying those details is the person they describe.',
+      'The details are usually not secret. A name and an account number are semi-public, and the rest is frequently derivable. Once the agent treats the claim as established, everything downstream inherits the mistake, including the tools that write.',
+      'The tell is in the transcript rather than the code. The agent moves from asking to assuming in a single turn, and after that it never re-establishes identity even when the request escalates from reading something harmless to changing something that matters.',
+      'Guardrails do not catch this because nothing hostile is said. The conversation is cooperative from end to end. It is a business logic failure wearing the clothes of a normal support call.',
+      'The check to run: read a transcript and mark the exact turn where your agent stops verifying and starts assuming. Then list every tool it can reach after that turn. That list is your actual blast radius.',
+    ],
+  },
+]
+---
+
+<Base
+  title="Research · Bastion"
+  description="How classes of AI agents fail, written from the builder's side. Each pattern ends with a check you can run against your own system."
+>
+  <section class="top">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="page">
+      <p class="label">Failure patterns</p>
+      <h1>Research</h1>
+      <p class="lede">
+        Here is a hole that is probably in your system. Patterns we keep
+        finding, each ending with a check you can run today.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      {
+        pieces.map((p, i) => (
+          <article class="piece">
+            <header>
+              <span class="idx">{String(i + 1).padStart(2, '0')}</span>
+              <span class="code">{p.code}</span>
+              <span class="klass">{p.klass}</span>
+              <time class="date tnum" datetime={p.published}>
+                {p.published}
+              </time>
+            </header>
+            <h2>{p.title}</h2>
+            <p class="hook">{p.hook}</p>
+            {p.found && (
+              <aside class="found">
+                <span class="found-label">From an engagement</span>
+                <p>{p.found}</p>
+              </aside>
+            )}
+            {p.body.map((b) => <p class="para">{b}</p>)}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .glow {
+    position: absolute;
+    inset: -40% -20% auto -20%;
+    height: 190%;
+    z-index: -1;
+    background: radial-gradient(
+      44% 46% at 30% 0%,
+      rgba(255, 240, 206, 0.28) 0%,
+      rgba(16, 15, 13, 0) 68%
+    );
+    filter: blur(26px);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.25rem + 3vw, 3.4rem);
+    margin-block: 1.1rem 1.3rem;
+    max-width: 20ch;
+  }
+
+  .piece {
+    max-width: 68ch;
+    padding-top: clamp(2rem, 4vw, 3rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid var(--stone-line);
+  }
+
+  .piece:first-of-type {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .idx {
+    font-size: 0.76rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .code {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--gold-text);
+  }
+
+  .klass {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .date {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2.05rem);
+    max-width: 24ch;
+  }
+
+  .hook {
+    margin-top: 1rem;
+    font-size: clamp(1.05rem, 1rem + 0.35vw, 1.2rem);
+    line-height: 1.55;
+    color: var(--ink);
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--gold);
+  }
+
+  .found {
+    margin-top: 1.25rem;
+    padding: 0.95rem 1.15rem;
+    background: var(--panel);
+    border: 1px solid var(--stone-line);
+    border-radius: 3px;
+  }
+
+  .found-label {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin-bottom: 0.4rem;
+  }
+
+  .found p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .para {
+    margin-top: 1.05rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+</style>
