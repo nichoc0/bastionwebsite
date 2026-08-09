@@ -5,9 +5,12 @@
 //
 // Every failure mode here is drawn from our own published material: the
 // engagement cases (data/engagements.ts), the research pieces, the mechanism
-// faces, or the taxonomy families. The `found` lines reuse engagement wording
-// already on the record. Types with no engagement behind them carry no line.
-// Do not add one until there is a case on the record.
+// faces, or the taxonomy families.
+//
+// No per-type "From an engagement" lines: the only cases on the record are
+// the three the reader just saw in the engagements section, and repeating
+// them here made 850 findings feel like three. Lines come back when they can
+// cite cases the page does not already show, voice first.
 const types = [
   {
     name: 'Customer support chat',
@@ -16,8 +19,6 @@ const types = [
       'System prompts recoverable word for word',
       'Guardrails watching the language while the API layer leaks',
     ],
-    found:
-      "A canary account owning no data listed more than two thousand other tenants' live support conversations.",
   },
   {
     name: 'Coding agents',
@@ -26,8 +27,6 @@ const types = [
       'Untrusted text arriving as trusted instructions',
       'One full-scope token behind every tool call',
     ],
-    found:
-      "Text from a stranger's pull request drove merges, approvals and secret reads with no human in the loop.",
   },
   {
     name: 'E-commerce agents',
@@ -36,8 +35,6 @@ const types = [
       'Pre-signed download links minted on request',
       'An analytics question answered with a customer export',
     ],
-    found:
-      'Asked for analytics, the agent handed out a link to names, emails, locations and order totals. No login.',
   },
   {
     name: 'Voice agents',
@@ -81,12 +78,6 @@ const types = [
                 <li>{m}</li>
               ))}
             </ul>
-            {t.found && (
-              <p class="found">
-                <span>From an engagement</span>
-                {t.found}
-              </p>
-            )}
           </article>
         ))
       }
@@ -152,25 +143,6 @@ const types = [
     width: 6px;
     height: 1px;
     background: var(--gold);
-  }
-
-  .found {
-    margin-top: 0.2rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid var(--stone-line);
-    font-size: 0.88rem;
-    line-height: 1.55;
-    color: var(--ink-2);
-  }
-
-  .found span {
-    display: block;
-    font-size: 0.64rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold-text);
-    margin-bottom: 0.35rem;
   }
 
   @media (max-width: 980px) {

@@ -1,6 +1,7 @@
 ---
 // The Lakera ranking is the strongest external validation on the page, so it
 // carries the band: widest column, largest figure. The other two support.
+import { dataset } from '../data/dataset'
 ---
 
 <section class="band">
@@ -24,19 +25,12 @@
     </article>
 
     <article class="stat">
-      <p class="value">
-        <span class="line">
-          <svg viewBox="0 0 64 64" aria-hidden="true" class="wheel">
-            <circle cx="32" cy="32" r="23" class="ring" />
-            <circle cx="32" cy="32" r="23" class="arc" />
-            <circle cx="32" cy="32" r="4.5" class="hub" />
-          </svg>
-          Continuous
-        </span>
-        <span class="scale">vulnerability research</span>
+      <p class="value tnum">
+        {dataset.findings}
+        <span class="scale">confirmed findings</span>
       </p>
       <hr class="rule" />
-      <p class="label">The corpus compounds every run</p>
+      <p class="label">Across {dataset.engagements} engagements</p>
     </article>
   </div>
 </section>
@@ -94,50 +88,6 @@
   .label {
     color: var(--muted);
     letter-spacing: 0.14em;
-  }
-
-  .line {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-  }
-
-  .wheel {
-    width: 0.82em;
-    height: 0.82em;
-    flex: none;
-  }
-
-  .ring {
-    fill: none;
-    stroke: var(--stone-line);
-    stroke-width: 2;
-  }
-
-  .arc {
-    fill: none;
-    stroke: var(--gold);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-dasharray: 46 99;
-    transform-origin: 32px 32px;
-    animation: spin 6s linear infinite;
-  }
-
-  .hub {
-    fill: var(--gold);
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .arc {
-      animation: none;
-    }
   }
 
   @media (max-width: 820px) {
