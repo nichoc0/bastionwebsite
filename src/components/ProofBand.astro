@@ -1,24 +1,27 @@
 ---
-const proof = [
-  { value: '#5', scale: 'of 10,000+', label: "Lakera's Agent Breaker leaderboard" },
-  { value: '94%', scale: 'attack success rate', label: 'AgentHarm, official test split' },
-]
+// The Lakera ranking is the strongest external validation on the page, so it
+// carries the band: widest column, largest figure. The other two support.
 ---
 
 <section class="band">
   <div class="page grid">
-    {
-      proof.map((p) => (
-        <article class="stat">
-          <p class="value tnum">
-            {p.value}
-            <span class="scale">{p.scale}</span>
-          </p>
-          <hr class="rule" />
-          <p class="label">{p.label}</p>
-        </article>
-      ))
-    }
+    <article class="stat lead">
+      <p class="value tnum">
+        #5
+        <span class="scale">of 10,000+</span>
+      </p>
+      <hr class="rule" />
+      <p class="label">Lakera's Agent Breaker leaderboard</p>
+    </article>
+
+    <article class="stat">
+      <p class="value tnum">
+        94%
+        <span class="scale">attack success rate</span>
+      </p>
+      <hr class="rule" />
+      <p class="label">AgentHarm, official test split</p>
+    </article>
 
     <article class="stat">
       <p class="value">
@@ -45,10 +48,20 @@ const proof = [
     padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
   }
 
+  /* asymmetric on purpose: the leaderboard rank owns the band */
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 2.6fr 1fr 1fr;
     gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  .lead .value {
+    font-size: clamp(3.4rem, 2.2rem + 4.6vw, 6rem);
+  }
+
+  .lead .scale {
+    font-size: 1rem;
   }
 
   .stat {

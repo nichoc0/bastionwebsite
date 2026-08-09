@@ -32,20 +32,8 @@ const points = [
         </div>
       </div>
     </div>
-
-    <figure class="shot">
-      <img
-        src="/assets/shot-run.webp"
-        width="1800"
-        height="1125"
-        alt="A run in the Bastion console: 128 turns, 4 agents, 5 findings, each mapped to an OWASP class."
-        
-        decoding="async"
-      />
-      <figcaption class="muted tnum">
-        One run. 128 turns, 4 agents, 5 findings, each mapped to its OWASP class.
-      </figcaption>
-    </figure>
+    <!-- the console shot lives higher on the page now, in its own band
+         after the engagement cases, and on /platform -->
   </div>
 </section>
 
@@ -96,26 +84,6 @@ const points = [
     align-items: center;
     gap: 0.5rem;
     margin-top: 1.9rem;
-  }
-
-  .shot {
-    margin: clamp(3rem, 6vw, 4.5rem) 0 0;
-  }
-
-  .shot img {
-    width: 100%;
-    height: auto;
-    border: 1px solid var(--stone-line);
-    border-radius: 3px;
-    box-shadow:
-      0 1px 2px rgba(25, 23, 19, 0.04),
-      0 18px 48px -20px rgba(25, 23, 19, 0.24);
-  }
-
-  .shot figcaption {
-    margin-top: 0.9rem;
-    font-family: var(--sans);
-    font-size: 0.76rem;
   }
 
   @media (max-width: 860px) {
