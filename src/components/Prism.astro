@@ -2,6 +2,11 @@
 // Twelve faces, one mechanism each. Drag it in any direction. Click a face and
 // it tells you the part of that mechanism that is not obvious.
 import { mechanisms } from '../data/mechanisms'
+
+// The read-out ships with the first mechanism server-rendered. Before this it
+// was empty markup filled in by the script, so no-JS visitors and crawlers got
+// a bare headline and an empty link.
+const first = mechanisms[0]
 ---
 
 <div class="solid">
@@ -19,10 +24,12 @@ import { mechanisms } from '../data/mechanisms'
   </div>
 
   <aside class="read">
-    <p class="face" data-face></p>
-    <h3 data-title></h3>
-    <p class="line" data-line></p>
-    <a class="cite" data-cite href="#" target="_blank" rel="noopener noreferrer"></a>
+    <p class="face" data-face>{first.face}</p>
+    <h3 data-title>{first.title}</h3>
+    <p class="line" data-line>{first.line}</p>
+    <a class="cite" data-cite href={first.url} target="_blank" rel="noopener noreferrer"
+      >{first.cite} ↗</a
+    >
   </aside>
 </div>
 
@@ -351,6 +358,12 @@ import { mechanisms } from '../data/mechanisms'
     position: absolute;
     inset: 0;
     pointer-events: none;
+  }
+
+  /* the neighbour chips are labelled by the script. without JS they stay
+     empty, and an empty chip is noise, so it hides itself. */
+  .pad button:empty {
+    display: none;
   }
 
   .pad button {
