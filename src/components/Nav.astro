@@ -23,6 +23,18 @@ const links = [
     </nav>
 
     <a class="btn btn-ghost cta" href="/contact">See how it fails</a>
+
+    <!-- the same links on a phone, where the row nav is hidden. a native
+         details disclosure, so it costs no JS and cannot trap content. -->
+    <details class="mnav">
+      <summary aria-label="Menu">
+        <span class="bars" aria-hidden="true"></span>
+      </summary>
+      <div class="sheet">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+        <a href="/contact">Contact</a>
+      </div>
+    </details>
   </div>
   <hr class="hairline" />
 </header>
@@ -109,9 +121,88 @@ const links = [
     );
   }
 
+  .mnav {
+    display: none;
+    position: relative;
+  }
+
+  .mnav summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--stone-line);
+    border-radius: 3px;
+  }
+
+  .mnav summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mnav[open] summary {
+    border-color: var(--gold);
+  }
+
+  .bars {
+    position: relative;
+    width: 16px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .bars::before,
+  .bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .bars::before {
+    top: -5px;
+  }
+
+  .bars::after {
+    top: 5px;
+  }
+
+  .sheet {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    min-width: 11rem;
+    display: grid;
+    padding: 0.45rem;
+    background: var(--bone-lift);
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+    z-index: 20;
+  }
+
+  .sheet a {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--ink-2);
+    border-radius: 3px;
+  }
+
+  .sheet a:hover {
+    color: var(--gold-text);
+    background: var(--panel);
+  }
+
   @media (max-width: 860px) {
     nav {
       display: none;
+    }
+    .mnav {
+      display: block;
     }
   }
 </style>
