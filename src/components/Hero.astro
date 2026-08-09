@@ -49,6 +49,8 @@ const links = corpus.links.toLocaleString('en-US')
       </form>
       <a class="btn btn-quiet" href="#how-agents-fail">What we find</a>
     </div>
+
+    <p class="start-note rise d5">Prefills the contact form with your domain.</p>
   </div>
 
   <!-- the product, cut off by the fold -->
@@ -377,6 +379,15 @@ const links = corpus.links.toLocaleString('en-US')
       width: 100%;
       padding-block: 0.7rem;
     }
+  }
+
+  /* the field looks like it might scan something. it does not, and the page
+     says so instead of letting the reader find out on the next screen. */
+  .start-note {
+    margin-top: 0.7rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    color: rgba(245, 239, 226, 0.48);
   }
 
   /* the stage crops the product against the fold */

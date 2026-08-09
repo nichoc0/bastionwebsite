@@ -54,6 +54,22 @@ import AgentTypes from '../components/AgentTypes.astro'
   <Evidence />
   <Pipeline />
   <Failures />
+
+  <!-- the page ends on our ask, not on other people's breaches -->
+  <section class="closer-band">
+    <div class="page closer">
+      <h2>See how your agent fails</h2>
+      <div class="closer-acts">
+        <a class="btn btn-primary" href="/contact">See how it fails</a>
+        <a
+          class="btn btn-quiet"
+          href="https://calendar.app.google/uUM1Mqos7uFRxfa67"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Book a call</a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
@@ -92,5 +108,34 @@ import AgentTypes from '../components/AgentTypes.astro'
     margin-top: 0.9rem;
     font-family: var(--sans);
     font-size: 0.76rem;
+  }
+
+  .closer-band {
+    padding-block: clamp(3.25rem, 6vw, 5rem);
+    border-top: 1px solid var(--stone-line);
+  }
+
+  .closer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.75rem 2.5rem;
+  }
+
+  .closer h2 {
+    font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.3rem);
+    max-width: 22ch;
+  }
+
+  .closer-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  @media (max-width: 720px) {
+    .closer {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
