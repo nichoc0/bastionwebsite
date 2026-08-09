@@ -1,0 +1,42 @@
+name: Deploy production
+
+# Vercel's git integration was unreliable for main: commits authored by an
+# email not linked to the Vercel account get BLOCKED, so production did not
+# always update. This action deploys with a token instead, which has no author
+# check, and always promotes the build to production (aliases trybastion.ai).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# a newer push to main cancels an in-flight one, so the latest commit always
+# wins the production alias
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
