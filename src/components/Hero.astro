@@ -56,27 +56,12 @@ const links = corpus.links.toLocaleString('en-US')
   <!-- the product, cut off by the fold -->
   <div class="stage rise d5">
     <div class="frame">
-      <video
-        class="reel"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="/assets/shot-cortex.webp"
-        width="1440"
-        height="900"
-        aria-label="The corpus being browsed: vulnerability classes, then the OWASP LLM Top 10."
-      >
-        <source src="/assets/cortex-tour.webm" type="video/webm" />
-        <source src="/assets/cortex-tour.mp4" type="video/mp4" />
-      </video>
       <img
-        class="still"
-        src="/assets/shot-cortex.webp"
+        src="/assets/shot-dashboard.webp"
         width="1800"
         height="1125"
-        alt={`The Bastion corpus: ${items} items and ${links} links.`}
+        alt="The Bastion console: risk posture, open findings by severity, and every finding mapped to its OWASP class."
+        fetchpriority="high"
         decoding="async"
       />
     </div>

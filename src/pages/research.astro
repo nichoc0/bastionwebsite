@@ -19,6 +19,30 @@ import { pieces } from '../data/research'
     </div>
   </section>
 
+  <section class="reel-band">
+    <div class="page">
+      <figure class="reel-wrap">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/assets/shot-cortex.webp"
+          width="1440"
+          height="900"
+          aria-label="The corpus being browsed: vulnerability classes, then the OWASP LLM Top 10."
+        >
+          <source src="/assets/cortex-tour.webm" type="video/webm" />
+          <source src="/assets/cortex-tour.mp4" type="video/mp4" />
+        </video>
+        <figcaption class="muted tnum">
+          The corpus every pattern below is drawn from. <a href="/corpus">Browse it</a>.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section class="section">
     <div class="page">
       <ol class="index">
@@ -51,6 +75,37 @@ import { pieces } from '../data/research'
     position: relative;
     overflow: hidden;
     padding-block: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .reel-band {
+    padding-block: clamp(1rem, 2.5vw, 2rem) clamp(2.25rem, 4.5vw, 3.5rem);
+    border-bottom: 1px solid var(--stone-line);
+  }
+
+  .reel-wrap {
+    margin: 0;
+    max-width: 900px;
+  }
+
+  .reel-wrap video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--stone-line);
+    border-radius: 6px;
+    box-shadow:
+      0 1px 2px rgba(25, 23, 19, 0.04),
+      0 18px 48px -20px rgba(25, 23, 19, 0.24);
+  }
+
+  .reel-wrap figcaption {
+    margin-top: 0.9rem;
+    font-family: var(--sans);
+    font-size: 0.76rem;
+  }
+
+  .reel-wrap figcaption a {
+    color: inherit;
   }
 
   .glow {
