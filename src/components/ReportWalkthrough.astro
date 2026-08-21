@@ -1,9 +1,39 @@
 ---
-// The portable artifact. Every engagement ends in one attestation document,
-// independent and tagged to the frameworks an enterprise security review
-// already checks. The real report (GitHub Copilot coding agent, BSTN-GHCP-
-// 2026-06-R11) is the visual; the steps walk the reader through what makes it
-// the thing a founder can hand across the table.
+// The portable artifact, walked through. The real report (anonymized coding
+// agent, BSTN-ACA-2026-06-R11) is the visual. Clicking a step crossfades the
+// document to the section that backs the claim. Interaction is one small
+// vanilla script; all motion is opacity only, so it stays inside the perf
+// budget (no scroll-linked work, no library).
+const steps = [
+  {
+    n: '01',
+    title: 'Independent',
+    body: 'We ran the engagement and wrote the report. The customer did not fill in a form.',
+    img: '/assets/report-01.webp',
+    alt: 'Attestation report BSTN-ACA-2026-06-R11: the header, run id, and engagement method.',
+  },
+  {
+    n: '02',
+    title: 'Scoped before the first probe',
+    body: 'What the agent may do, and what it may never do, written down up front and tested against.',
+    img: '/assets/report-02.webp',
+    alt: 'System description: the allowed and forbidden actions and the tool-chain under attestation.',
+  },
+  {
+    n: '03',
+    title: 'Mapped to the controls they check',
+    body: 'Every finding tagged to OWASP LLM, OWASP Agentic, and NIST AI RMF at collection time.',
+    img: '/assets/report-03.webp',
+    alt: 'Regulatory framework mapping: findings tagged to OWASP LLM, OWASP Agentic, and NIST AI RMF controls.',
+  },
+  {
+    n: '04',
+    title: 'Re-attestable',
+    body: 'Change the system, re-run the suite, the document updates. A point-in-time scan cannot.',
+    img: '/assets/report-04.webp',
+    alt: 'The re-attestation log: each system change, the suite it triggered, and the result.',
+  },
+]
 ---
 
 <section class="report" id="artifact">
@@ -17,48 +47,46 @@
       </p>
     </header>
 
-    <div class="grid">
+    <div class="grid" data-report>
       <figure class="doc">
-        <img
-          src="/assets/shot-report.webp"
-          width="1500"
-          height="2600"
-          alt="Attestation report BSTN-GHCP-2026-06-R11 for the GitHub Copilot coding agent: scope, allowed and forbidden actions, and every finding mapped to OWASP LLM, OWASP Agentic, and NIST AI RMF controls."
-          loading="lazy"
-          decoding="async"
-        />
-        <figcaption class="tnum">Report BSTN-GHCP-2026-06-R11</figcaption>
+        {
+          steps.map((s, i) => (
+            <img
+              class="frame-img"
+              src={s.img}
+              width="1600"
+              height="1111"
+              alt={s.alt}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              data-frame={i}
+              data-active={i === 0 ? 'true' : 'false'}
+            />
+          ))
+        }
+        <figcaption class="tnum">Report BSTN-ACA-2026-06-R11</figcaption>
       </figure>
 
-      <ol class="steps">
-        <li>
-          <span class="n tnum">01</span>
-          <div>
-            <h3>Independent</h3>
-            <p>We ran the engagement and wrote the report. The customer did not fill in a form.</p>
-          </div>
-        </li>
-        <li>
-          <span class="n tnum">02</span>
-          <div>
-            <h3>Scoped before the first probe</h3>
-            <p>What the agent may do, and what it may never do, written down up front and tested against.</p>
-          </div>
-        </li>
-        <li>
-          <span class="n tnum">03</span>
-          <div>
-            <h3>Mapped to the controls they check</h3>
-            <p>Every finding tagged to OWASP LLM, OWASP Agentic, and NIST AI RMF at collection time.</p>
-          </div>
-        </li>
-        <li>
-          <span class="n tnum">04</span>
-          <div>
-            <h3>Re-attestable</h3>
-            <p>Change the system, re-run the suite, the document updates. A point-in-time scan cannot.</p>
-          </div>
-        </li>
+      <ol class="steps" role="tablist" aria-label="Report walkthrough">
+        {
+          steps.map((s, i) => (
+            <li>
+              <button
+                class="step"
+                type="button"
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-step={i}
+              >
+                <span class="n tnum">{s.n}</span>
+                <span class="text">
+                  <span class="t">{s.title}</span>
+                  <span class="b">{s.body}</span>
+                </span>
+              </button>
+            </li>
+          ))
+        }
         <li class="cta-li">
           <a class="cta" href="/contact">Book a scoping call →</a>
         </li>
@@ -66,6 +94,22 @@
     </div>
   </div>
 </section>
+
+<script>
+  const root = document.querySelector('[data-report]')
+  if (root) {
+    const frames = root.querySelectorAll('[data-frame]')
+    const steps = root.querySelectorAll('[data-step]')
+    const show = (i) => {
+      frames.forEach((f) => f.setAttribute('data-active', f.dataset.frame === String(i) ? 'true' : 'false'))
+      steps.forEach((s) => s.setAttribute('aria-selected', s.dataset.step === String(i) ? 'true' : 'false'))
+    }
+    steps.forEach((s) => {
+      s.addEventListener('click', () => show(Number(s.dataset.step)))
+      s.addEventListener('mouseenter', () => show(Number(s.dataset.step)))
+    })
+  }
+</script>
 
 <style>
   .report {
@@ -103,35 +147,43 @@
   .grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(2rem, 4vw, 3.5rem);
+    gap: clamp(1.75rem, 3.5vw, 3rem);
     align-items: start;
   }
 
   @media (min-width: 900px) {
     .grid {
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 1.1fr 0.9fr;
     }
   }
 
-  /* the document. real report, clipped and dissolving into the page so it reads
-     as one page of a longer thing. */
+  /* the document viewport. all four sections are stacked; only the active one
+     is opaque, so switching steps is an opacity crossfade, nothing that
+     touches layout. */
   .doc {
     position: relative;
     margin: 0;
+    aspect-ratio: 1600 / 1040;
     border: 1px solid var(--stone-line);
     border-radius: 8px;
     overflow: hidden;
-    max-height: 660px;
     background: #fff;
     box-shadow:
       0 -1px 0 rgba(255, 255, 255, 0.6) inset,
       0 30px 80px -34px rgba(0, 0, 0, 0.7);
   }
 
-  .doc img {
-    display: block;
+  .frame-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: auto;
+    opacity: 0;
+    transition: opacity 420ms ease;
+  }
+
+  .frame-img[data-active='true'] {
+    opacity: 1;
   }
 
   .doc::after {
@@ -140,15 +192,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 160px;
+    height: 90px;
     pointer-events: none;
-    background: linear-gradient(to top, var(--bone) 6%, rgba(16, 15, 13, 0) 100%);
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
   }
 
   .doc figcaption {
     position: absolute;
     left: 14px;
-    bottom: 12px;
+    bottom: 10px;
     z-index: 1;
     font-family: var(--sans);
     font-size: 0.72rem;
@@ -160,48 +212,90 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    position: sticky;
-    top: 90px;
   }
 
   .steps li {
-    display: flex;
-    gap: 1rem;
-    padding-block: clamp(1rem, 2vw, 1.4rem);
     border-top: 1px solid var(--stone-line);
   }
 
   .steps li:first-child {
     border-top: 0;
-    padding-top: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: clamp(0.9rem, 1.8vw, 1.3rem) 0;
+    color: inherit;
+    font: inherit;
+    position: relative;
+    transition: opacity 150ms ease;
+  }
+
+  /* the active rail */
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -0.9rem;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    width: 2px;
+    height: 62%;
+    background: var(--gold);
+    transition: transform 200ms ease;
+  }
+
+  .step[aria-selected='true']::before {
+    transform: translateY(-50%) scaleY(1);
   }
 
   .n {
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--gold-text);
-    padding-top: 0.2rem;
+    color: var(--muted);
+    padding-top: 0.15rem;
     min-width: 1.6rem;
+    transition: color 150ms ease;
   }
 
-  .steps h3 {
+  .step[aria-selected='true'] .n {
+    color: var(--gold-text);
+  }
+
+  .text {
+    display: block;
+  }
+
+  .t {
+    display: block;
     font-family: var(--display);
     font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: -0.02em;
-    margin: 0 0 0.3rem;
+    color: var(--ink-2);
+    margin-bottom: 0.25rem;
+    transition: color 150ms ease;
+  }
+
+  .step[aria-selected='true'] .t {
     color: var(--ink);
   }
 
-  .steps p {
-    margin: 0;
+  .b {
+    display: block;
     font-size: 0.94rem;
     line-height: 1.55;
-    color: var(--ink-2);
+    color: var(--muted);
+    max-width: 42ch;
   }
 
   .cta-li {
-    padding-top: clamp(1.2rem, 2.5vw, 1.75rem) !important;
+    padding-top: clamp(1.2rem, 2.5vw, 1.75rem);
   }
 
   .cta {
@@ -223,8 +317,12 @@
     background: var(--gold-lift);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .steps {
+  @media (prefers-reduced-motion: reduce) {
+    .frame-img,
+    .step,
+    .step::before,
+    .n,
+    .t {
       transition: none;
     }
   }
