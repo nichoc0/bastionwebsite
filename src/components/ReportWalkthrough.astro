@@ -1,0 +1,231 @@
+---
+// The portable artifact. Every engagement ends in one attestation document,
+// independent and tagged to the frameworks an enterprise security review
+// already checks. The real report (GitHub Copilot coding agent, BSTN-GHCP-
+// 2026-06-R11) is the visual; the steps walk the reader through what makes it
+// the thing a founder can hand across the table.
+---
+
+<section class="report" id="artifact">
+  <div class="page">
+    <header class="head">
+      <p class="label">The artifact</p>
+      <h2>What you can walk in a room with</h2>
+      <p class="lede">
+        Every engagement ends in one document. We ran the attacks, so we wrote it.
+        It is dated, scoped, and tagged to the frameworks a security team already checks.
+      </p>
+    </header>
+
+    <div class="grid">
+      <figure class="doc">
+        <img
+          src="/assets/shot-report.webp"
+          width="1500"
+          height="2600"
+          alt="Attestation report BSTN-GHCP-2026-06-R11 for the GitHub Copilot coding agent: scope, allowed and forbidden actions, and every finding mapped to OWASP LLM, OWASP Agentic, and NIST AI RMF controls."
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption class="tnum">Report BSTN-GHCP-2026-06-R11</figcaption>
+      </figure>
+
+      <ol class="steps">
+        <li>
+          <span class="n tnum">01</span>
+          <div>
+            <h3>Independent</h3>
+            <p>We ran the engagement and wrote the report. The customer did not fill in a form.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n tnum">02</span>
+          <div>
+            <h3>Scoped before the first probe</h3>
+            <p>What the agent may do, and what it may never do, written down up front and tested against.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n tnum">03</span>
+          <div>
+            <h3>Mapped to the controls they check</h3>
+            <p>Every finding tagged to OWASP LLM, OWASP Agentic, and NIST AI RMF at collection time.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n tnum">04</span>
+          <div>
+            <h3>Re-attestable</h3>
+            <p>Change the system, re-run the suite, the document updates. A point-in-time scan cannot.</p>
+          </div>
+        </li>
+        <li class="cta-li">
+          <a class="cta" href="/contact">Book a scoping call →</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .report {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--stone-line);
+  }
+
+  .head {
+    max-width: 46ch;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin: 0 0 0.6rem;
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem);
+    margin: 0 0 0.9rem;
+    max-width: 18ch;
+  }
+
+  .lede {
+    font-size: clamp(1rem, 0.97rem + 0.3vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+
+  /* the document. real report, clipped and dissolving into the page so it reads
+     as one page of a longer thing. */
+  .doc {
+    position: relative;
+    margin: 0;
+    border: 1px solid var(--stone-line);
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 660px;
+    background: #fff;
+    box-shadow:
+      0 -1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 30px 80px -34px rgba(0, 0, 0, 0.7);
+  }
+
+  .doc img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .doc::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 160px;
+    pointer-events: none;
+    background: linear-gradient(to top, var(--bone) 6%, rgba(16, 15, 13, 0) 100%);
+  }
+
+  .doc figcaption {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    z-index: 1;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: sticky;
+    top: 90px;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 1rem;
+    padding-block: clamp(1rem, 2vw, 1.4rem);
+    border-top: 1px solid var(--stone-line);
+  }
+
+  .steps li:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .n {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gold-text);
+    padding-top: 0.2rem;
+    min-width: 1.6rem;
+  }
+
+  .steps h3 {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.3rem;
+    color: var(--ink);
+  }
+
+  .steps p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .cta-li {
+    padding-top: clamp(1.2rem, 2.5vw, 1.75rem) !important;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    height: 2.4rem;
+    padding-inline: 1.1rem;
+    background: var(--gold);
+    color: #100f0d;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 150ms ease;
+  }
+
+  .cta:hover {
+    background: var(--gold-lift);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .steps {
+      transition: none;
+    }
+  }
+</style>
