@@ -8,11 +8,9 @@ const surfaces = [
   { k: 'Your CI', v: 'a run on every deployment, so a regression surfaces as one' },
 ]
 
-const start = [
-  'sign up and look around the corpus',
-  'read a full sample report end to end',
-  'run against a sandbox agent we host',
-]
+// The self-serve block (corpus browser, sample report, hosted sandbox) was
+// cut 2026-08-09: it promised three doors that do not exist yet. It comes
+// back when the doors are real, not as a teaser.
 ---
 
 <section class="section pipe" id="pipeline">
@@ -39,20 +37,9 @@ const start = [
       }
     </dl>
 
-    <!-- self-serve entry. frictionless to start, and only to start. -->
-    <div class="start">
-      <div class="start-copy">
-        <p class="label">Start without talking to anyone</p>
-        <ul>{start.map((s) => <li>{s}</li>)}</ul>
-        <p class="fine">
-          Running against your own production agent is scoped with us first.
-        </p>
-      </div>
-
-      <div class="start-do">
-        <a class="btn btn-primary" href="/contact">See how it fails</a>
-        <a class="btn btn-quiet" href="/platform">How a run works</a>
-      </div>
+    <div class="acts">
+      <a class="btn btn-primary" href="/contact">See how it fails</a>
+      <a class="btn btn-quiet" href="/platform">How a run works</a>
     </div>
   </div>
 </section>
@@ -95,77 +82,16 @@ const start = [
     color: var(--ink-2);
   }
 
-  .start {
-    margin-top: clamp(2rem, 4vw, 3rem);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 1.75rem 2.5rem;
-    padding: clamp(1.4rem, 3vw, 2rem);
-    background: var(--panel);
-    border: 1px solid var(--stone-line);
-    border-radius: 4px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .start::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 2px;
-    background: linear-gradient(
-      to right,
-      var(--sp-1),
-      var(--sp-2) 30%,
-      var(--sp-3) 56%,
-      var(--sp-5) 80%,
-      transparent
-    );
-  }
-
-  .start ul {
-    list-style: none;
-    margin: 0.9rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.6rem;
-  }
-
-  .start li {
-    font-size: 0.94rem;
-    color: var(--ink-2);
-    padding-left: 1.1rem;
-    position: relative;
-  }
-
-  .start li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.62em;
-    width: 6px;
-    height: 1px;
-    background: var(--gold);
-  }
-
-  .fine {
-    margin-top: 0.9rem;
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-
-  .start-do {
+  .acts {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
   }
 
   @media (max-width: 900px) {
     .head,
-    .surfaces,
-    .start {
+    .surfaces {
       grid-template-columns: 1fr;
     }
     .surfaces {

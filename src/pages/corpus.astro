@@ -13,7 +13,10 @@ const stats = [
   { value: links, label: 'links between them' },
   { value: String(dataset.engagements), label: 'engagements' },
   { value: String(dataset.findings), label: 'findings' },
+  { value: String(dataset.lessons), label: 'lessons' },
 ]
+
+const famTotal = families.reduce((n, f) => n + f.count, 0)
 
 const pillars = [
   {
@@ -161,7 +164,10 @@ const sources = [
           ))
         }
       </ol>
-      <p class="asof">Snapshot {corpus.snapshot}. Generic failure classes only.</p>
+      <p class="asof">
+        <span class="tnum">{famTotal}</span> techniques across these ten families.
+        Snapshot {corpus.snapshot}. Generic failure classes only.
+      </p>
     </div>
   </section>
 
@@ -200,7 +206,7 @@ const sources = [
   .stats {
     margin: clamp(2rem, 4vw, 3rem) 0 0;
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(5, auto);
     justify-content: start;
     gap: clamp(1.5rem, 4vw, 3.5rem);
   }

@@ -10,6 +10,7 @@ import HowItWorks from '../components/HowItWorks.astro'
 import Evidence from '../components/Evidence.astro'
 import Pipeline from '../components/Pipeline.astro'
 import AgentTypes from '../components/AgentTypes.astro'
+import ReportWalkthrough from '../components/ReportWalkthrough.astro'
 ---
 
 <Base
@@ -23,24 +24,8 @@ import AgentTypes from '../components/AgentTypes.astro'
   <Engagements />
 
   <!-- the moment the reader goes from "they found things" to "they built
-       something". The console stands alone, straight after the cases. -->
-  <section class="run-band">
-    <div class="page">
-      <figure class="run-shot">
-        <img
-          src="/assets/shot-run.webp"
-          width="1800"
-          height="1125"
-          alt="A run in the Bastion console: 128 turns, 4 agents, 5 findings, each mapped to an OWASP class."
-          loading="lazy"
-          decoding="async"
-        />
-        <figcaption class="muted tnum">
-          One run. 128 turns, 4 agents, 5 findings, each mapped to its OWASP class.
-        </figcaption>
-      </figure>
-    </div>
-  </section>
+       something": the artifact a founder hands to an enterprise review. -->
+  <ReportWalkthrough />
 
   <HowItWorks />
   <AgentTypes />
@@ -54,6 +39,22 @@ import AgentTypes from '../components/AgentTypes.astro'
   <Evidence />
   <Pipeline />
   <Failures />
+
+  <!-- the page ends on our ask, not on other people's breaches -->
+  <section class="closer-band">
+    <div class="page closer">
+      <h2>See how your agent fails</h2>
+      <div class="closer-acts">
+        <a class="btn btn-primary" href="/contact">See how it fails</a>
+        <a
+          class="btn btn-quiet"
+          href="https://calendar.app.google/uUM1Mqos7uFRxfa67"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Book a call</a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
@@ -69,28 +70,32 @@ import AgentTypes from '../components/AgentTypes.astro'
     margin-block: 1rem 1.75rem;
   }
 
-  .run-band {
-    padding-block: clamp(2.75rem, 5vw, 4.5rem);
-    border-bottom: 1px solid var(--stone-line);
+  .closer-band {
+    padding-block: clamp(3.25rem, 6vw, 5rem);
+    border-top: 1px solid var(--stone-line);
   }
 
-  .run-shot {
-    margin: 0;
+  .closer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.75rem 2.5rem;
   }
 
-  .run-shot img {
-    width: 100%;
-    height: auto;
-    border: 1px solid var(--stone-line);
-    border-radius: 3px;
-    box-shadow:
-      0 1px 2px rgba(25, 23, 19, 0.04),
-      0 18px 48px -20px rgba(25, 23, 19, 0.24);
+  .closer h2 {
+    font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.3rem);
+    max-width: 22ch;
   }
 
-  .run-shot figcaption {
-    margin-top: 0.9rem;
-    font-family: var(--sans);
-    font-size: 0.76rem;
+  .closer-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  @media (max-width: 720px) {
+    .closer {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

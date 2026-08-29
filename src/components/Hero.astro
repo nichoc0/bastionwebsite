@@ -49,32 +49,19 @@ const links = corpus.links.toLocaleString('en-US')
       </form>
       <a class="btn btn-quiet" href="#how-agents-fail">What we find</a>
     </div>
+
+    <p class="start-note rise d5">Prefills the contact form with your domain.</p>
   </div>
 
   <!-- the product, cut off by the fold -->
   <div class="stage rise d5">
     <div class="frame">
-      <video
-        class="reel"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="/assets/shot-cortex.webp"
-        width="1440"
-        height="900"
-        aria-label="The corpus being browsed: vulnerability classes, then the OWASP LLM Top 10."
-      >
-        <source src="/assets/cortex-tour.webm" type="video/webm" />
-        <source src="/assets/cortex-tour.mp4" type="video/mp4" />
-      </video>
       <img
-        class="still"
-        src="/assets/shot-cortex.webp"
+        src="/assets/shot-dashboard.webp"
         width="1800"
         height="1125"
-        alt={`The Bastion corpus: ${items} items and ${links} links.`}
+        alt="The Bastion console: risk posture, open findings by severity, and every finding mapped to its OWASP class."
+        fetchpriority="high"
         decoding="async"
       />
     </div>
@@ -377,6 +364,15 @@ const links = corpus.links.toLocaleString('en-US')
       width: 100%;
       padding-block: 0.7rem;
     }
+  }
+
+  /* the field looks like it might scan something. it does not, and the page
+     says so instead of letting the reader find out on the next screen. */
+  .start-note {
+    margin-top: 0.7rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    color: rgba(245, 239, 226, 0.48);
   }
 
   /* the stage crops the product against the fold */
